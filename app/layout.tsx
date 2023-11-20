@@ -15,10 +15,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`bg-slate-900 text-white ${inter.className}`}>
-        {children}
-      </body>
+    <html lang="en" suppressHydrationWarning={true}>
+      <body className={`overscroll-none ${inter.className}`}>{children}</body>
     </html>
   );
 }

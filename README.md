@@ -2,7 +2,7 @@
 
 ## Production
 
-- Deployment Link:
+- Deployment Link: https://weathermate-nm.vercel.app
 - GitHub Repo Link: https://github.com/neetmangat/weathermate
 - YouTube Build Link: https://www.youtube.com/watch?v=1KPG3LiE4jU&t=35784s
 

@@ -6,8 +6,10 @@ import RainChart from "@/components/RainChart";
 import StatCard from "@/components/StatCard";
 import TempChart from "@/components/TempChart";
 import fetchWeatherQuery from "@/graphql/queries/fetchWeatherQueries";
+import cleanData from "@/lib/cleanData";
+import getBasePath from "@/lib/getBasePath";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 type Props = {
   params: {
@@ -32,12 +34,25 @@ async function WeatherDashboard({ params: { city, lat, long } }: Props) {
 
   const results: Root = data.myQuery;
 
-  // console.log(results);
+  const dataToSend = cleanData(results, city);
+
+  const res = await fetch(`${getBasePath()}/api/getWeatherSummary`, {
+    method: "POST",
+    body: JSON.stringify({ data: dataToSend }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const GPTdata = await res.json();
+  const { content } = GPTdata;
 
   return (
     <div className="flex flex-col min-h-screen md:flex-row">
+      {/* SideBar Info Panel */}
       <InformationPanel city={city} lat={lat} long={long} results={results} />
 
+      {/* Main Dashboard Content */}
       <div className="flex-1 p-5 lg:p-10 bg-slate-200">
         <div className="p-5">
           <div className="pb-5">
@@ -51,10 +66,7 @@ async function WeatherDashboard({ params: { city, lat, long } }: Props) {
 
           {/* GPT Weather Summary */}
           <div className="m-2 mb-10">
-            <CalloutCard
-              // warning
-              message="This is where GPT-4 Summary will go!"
-            />
+            <CalloutCard message={content} />
           </div>
 
           {/* Weather Info Dashboard */}
@@ -88,7 +100,7 @@ async function WeatherDashboard({ params: { city, lat, long } }: Props) {
             <div className="flex space-x-3">
               <StatCard
                 title="Wind Speed"
-                metric={`${results.current_weather.windspeed.toFixed(1)}m/s`}
+                metric={`${results.current_weather.windspeed.toFixed(1)}km/h`}
                 color="cyan"
               />
               <StatCard

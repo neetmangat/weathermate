@@ -3,7 +3,9 @@ import openai from "@/openai";
 
 export async function POST(request: Request) {
   // weatherdata in the body of the POST req
-  const { data: weatherData } = await request.json();
+  const { weatherData } = await request.json();
+
+  console.log({ weatherData });
 
   const response = await openai.createChatCompletion({
     model: "gpt-3.5-turbo", // change to 'gpt-4' if you have access to it

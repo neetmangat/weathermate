@@ -38,10 +38,10 @@ async function WeatherDashboard({ params: { city, lat, long } }: Props) {
 
   const res = await fetch(`${getBasePath()}/api/getWeatherSummary`, {
     method: "POST",
-    body: JSON.stringify({ data: dataToSend }),
     headers: {
       "Content-Type": "application/json",
     },
+    body: JSON.stringify({ weatherData: dataToSend }),
   });
 
   const GPTdata = await res.json();

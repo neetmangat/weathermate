@@ -64,6 +64,12 @@ function CityPicker() {
           options={countryOptions}
           onChange={handleSelectedCountry}
           placeholder="Select a country"
+          styles={{
+            control: (baseStyles, state) => ({
+              ...baseStyles,
+              borderColor: state.isFocused ? "#7c5a8d" : "#4b3556",
+            }),
+          }}
         />
       </div>
 
